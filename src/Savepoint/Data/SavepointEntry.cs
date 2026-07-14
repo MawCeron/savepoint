@@ -26,6 +26,10 @@ public sealed class SavepointEntry
     public int SnoozeCount { get; set; }
     public DateTime CreatedAt { get; set; }
 
+    // When this savepoint last completed an occurrence (confirmed/dismissed).
+    // Drives due-date evaluation for recurring schedule types.
+    public DateTime? LastTriggeredAt { get; set; }
+
     // Daily / Weekly: time of day the savepoint is due.
     public TimeOnly? TimeOfDay { get; set; }
 

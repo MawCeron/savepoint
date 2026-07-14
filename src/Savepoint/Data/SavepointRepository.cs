@@ -26,7 +26,8 @@ public sealed class SavepointRepository
                 TimeOfDay TEXT NULL,
                 DayOfWeek INTEGER NULL,
                 IntervalTicks INTEGER NULL,
-                OneTimeAt TEXT NULL
+                OneTimeAt TEXT NULL,
+                LastTriggeredAt TEXT NULL
             );
             """;
         command.ExecuteNonQuery();
@@ -45,9 +46,9 @@ public sealed class SavepointRepository
         using var command = connection.CreateCommand();
         command.CommandText = """
             INSERT INTO Savepoints
-                (Name, Icon, ScheduleType, InterruptionLevel, IsEnabled, SnoozeCount, CreatedAt, TimeOfDay, DayOfWeek, IntervalTicks, OneTimeAt)
+                (Name, Icon, ScheduleType, InterruptionLevel, IsEnabled, SnoozeCount, CreatedAt, TimeOfDay, DayOfWeek, IntervalTicks, OneTimeAt, LastTriggeredAt)
             VALUES
-                ($name, $icon, $scheduleType, $level, $enabled, $snoozeCount, $createdAt, $timeOfDay, $dayOfWeek, $intervalTicks, $oneTimeAt);
+                ($name, $icon, $scheduleType, $level, $enabled, $snoozeCount, $createdAt, $timeOfDay, $dayOfWeek, $intervalTicks, $oneTimeAt, $lastTriggeredAt);
             SELECT last_insert_rowid();
             """;
         BindParameters(command, entry);
@@ -63,7 +64,8 @@ public sealed class SavepointRepository
             UPDATE Savepoints SET
                 Name = $name, Icon = $icon, ScheduleType = $scheduleType, InterruptionLevel = $level,
                 IsEnabled = $enabled, SnoozeCount = $snoozeCount, CreatedAt = $createdAt,
-                TimeOfDay = $timeOfDay, DayOfWeek = $dayOfWeek, IntervalTicks = $intervalTicks, OneTimeAt = $oneTimeAt
+                TimeOfDay = $timeOfDay, DayOfWeek = $dayOfWeek, IntervalTicks = $intervalTicks, OneTimeAt = $oneTimeAt,
+                LastTriggeredAt = $lastTriggeredAt
             WHERE Id = $id;
             """;
         command.Parameters.AddWithValue("$id", entry.Id);
@@ -118,6 +120,7 @@ public sealed class SavepointRepository
         command.Parameters.AddWithValue("$dayOfWeek", (object?)(entry.DayOfWeek.HasValue ? (int)entry.DayOfWeek.Value : null) ?? DBNull.Value);
         command.Parameters.AddWithValue("$intervalTicks", (object?)entry.Interval?.Ticks ?? DBNull.Value);
         command.Parameters.AddWithValue("$oneTimeAt", (object?)entry.OneTimeAt?.ToString("o", CultureInfo.InvariantCulture) ?? DBNull.Value);
+        command.Parameters.AddWithValue("$lastTriggeredAt", (object?)entry.LastTriggeredAt?.ToString("o", CultureInfo.InvariantCulture) ?? DBNull.Value);
     }
 
     private static SavepointEntry ReadEntry(SqliteDataReader reader)
@@ -144,6 +147,9 @@ public sealed class SavepointRepository
             OneTimeAt = reader.IsDBNull(reader.GetOrdinal("OneTimeAt"))
                 ? null
                 : DateTime.Parse(reader.GetString(reader.GetOrdinal("OneTimeAt")), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
+            LastTriggeredAt = reader.IsDBNull(reader.GetOrdinal("LastTriggeredAt"))
+                ? null
+                : DateTime.Parse(reader.GetString(reader.GetOrdinal("LastTriggeredAt")), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
         };
     }
 }

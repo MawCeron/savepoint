@@ -84,14 +84,17 @@ public sealed class SavepointRepositoryTests : IDisposable
         Assert.Equal(entry.DayOfWeek, stored.DayOfWeek);
         Assert.Equal(entry.Interval, stored.Interval);
         Assert.Equal(entry.OneTimeAt, stored.OneTimeAt);
+        Assert.Equal(entry.LastTriggeredAt, stored.LastTriggeredAt);
 
         stored.Name = "Renamed";
         stored.SnoozeCount = 2;
+        stored.LastTriggeredAt = DateTime.UtcNow;
         _repository.Update(stored);
 
         var updated = _repository.GetById(id);
         Assert.Equal("Renamed", updated!.Name);
         Assert.Equal(2, updated.SnoozeCount);
+        Assert.Equal(stored.LastTriggeredAt, updated.LastTriggeredAt);
 
         _repository.Delete(id);
         Assert.Null(_repository.GetById(id));
