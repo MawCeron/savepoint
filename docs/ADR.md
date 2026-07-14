@@ -254,3 +254,19 @@ License the project under the MIT License.
 
 ---
 
+## ADR-0015 — All four schedule types ship in v0.1
+
+**Status:** Accepted
+
+**Context:**
+`FR-1.3` lists four globally-supported schedule types (daily, weekly, interval, one-time), but the v0.1 roadmap bullet list only named daily and interval — a documentation gap, since Weekly wasn't scheduled into any version, v0.1 through v0.5.
+
+**Decision:**
+`FR-1.3` is authoritative: v0.1's CRUD UI ships all four schedule types (daily, weekly, interval, one-time), not just daily/interval.
+
+**Consequences:**
+- The `ScheduleType` model and SQLite schema are designed for all four types from the start, avoiding a schema migration later — relevant given ADR-0005 rules out an ORM or migration framework.
+- Slightly larger v0.1 CRUD surface (one more schedule-type form) than the original roadmap bullets implied.
+
+---
+

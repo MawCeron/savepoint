@@ -150,8 +150,7 @@ Folders for v0.2+ features (multi-monitor detection, risk-context probes, import
 ## Roadmap
 
 ### v0.1 — First Savepoint
-- Daily savepoints
-- Interval savepoints
+- Daily, weekly, interval, and one-time savepoints (see ADR-0015)
 - Intelligent trigger timing
 - Interruption levels (Gentle / Standard / Critical) with level-based snooze rules
 - Fullscreen overlay (single monitor)
