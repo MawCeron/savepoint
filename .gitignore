@@ -1,0 +1,17 @@
+# .NET build output
+bin/
+obj/
+
+# Publish / AOT output
+publish/
+*.dll
+*.pdb
+
+# IDE / editor
+.vs/
+.vscode/
+*.user
+*.suo
+
+# OS cruft
+.DS_Store

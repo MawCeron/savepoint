@@ -237,3 +237,20 @@ Use a single project, `Savepoint`, with folders (`Ui/`, `Engine/`, `Platform/`, 
 
 ---
 
+## ADR-0014 — MIT License
+
+**Status:** Accepted
+
+**Context:**
+Savepoint is an open-source project (see Overview in `PROJECT_SCAFFOLD.md`). A license needs to be chosen and published before external contributors or users can rely on the code.
+
+**Decision:**
+License the project under the MIT License.
+
+**Consequences:**
+- Permissive terms (use, copy, modify, merge, publish, distribute, sublicense, sell) with no copyleft obligation, maximizing ease of adoption and contribution.
+- No warranty or liability is assumed by the authors.
+- The full license text lives in `LICENSE` at the repository root.
+
+---
+
